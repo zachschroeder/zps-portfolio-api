@@ -2,7 +2,7 @@
 
 using Microsoft.Azure.Cosmos;
 
-public class BookService
+public class BookService : IBookService
 {
     private CosmosClient client;
     private Database database;
@@ -28,5 +28,14 @@ public class BookService
                 bookList.Add(item);
 
         return bookList;
+    }
+
+    public async Task<Book> CreateBook(string title, string author)
+    {
+        Book bookToCreate = new(Guid.NewGuid(), title, author);
+
+        await this.container.CreateItemAsync(bookToCreate);
+        
+        return bookToCreate;
     }
 }
