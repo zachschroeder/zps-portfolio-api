@@ -1,6 +1,5 @@
 namespace Portfolio.Basic;
 
-using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -9,10 +8,12 @@ using System.Net;
 public class BasicFunction
 {
     private readonly ILogger _logger;
+    private readonly BookService _bookService;
 
-    public BasicFunction(ILoggerFactory loggerFactory)
+    public BasicFunction(ILoggerFactory loggerFactory, BookService bookService)
     {
         _logger = loggerFactory.CreateLogger<BasicFunction>();
+        this._bookService = bookService;
     }
 
     [Function("Books")]
@@ -20,19 +21,7 @@ public class BasicFunction
     {
         _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-        var EndpointUri = Environment.GetEnvironmentVariable("CosmosEndpoint");
-        var PrimaryKey = Environment.GetEnvironmentVariable("CosmosPrimaryKey");
-
-        CosmosClient client = new CosmosClient(EndpointUri, PrimaryKey);
-        Database database = client.GetDatabase("basic-db");
-        Container container = database.GetContainer("books");
-
-        var iterator = container.GetItemQueryIterator<Book>();
-        List<Book> bookList = new();
-
-        while (iterator.HasMoreResults)
-            foreach (var item in await iterator.ReadNextAsync().ConfigureAwait(false))
-                bookList.Add(item);
+        var bookList = await this._bookService.GetBooks();
 
         var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(bookList);
