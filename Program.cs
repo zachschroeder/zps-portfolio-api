@@ -6,7 +6,7 @@ var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
     .ConfigureServices(s =>
     {
-        s.AddScoped<IBookService, BookService>();
+        s.AddScoped<BookService>();
     })
     .Build();
 
