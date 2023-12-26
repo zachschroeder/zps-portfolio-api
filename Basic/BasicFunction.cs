@@ -9,9 +9,9 @@ using System.Text.Json;
 public class BasicFunction
 {
     private readonly ILogger _logger;
-    private readonly BookService _bookService;
+    private readonly IBookService _bookService;
 
-    public BasicFunction(ILoggerFactory loggerFactory, BookService bookService)
+    public BasicFunction(ILoggerFactory loggerFactory, IBookService bookService)
     {
         _logger = loggerFactory.CreateLogger<BasicFunction>();
         this._bookService = bookService;
