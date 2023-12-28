@@ -37,6 +37,13 @@ public class BasicFunction
 
         AddBookDto addBook = await JsonSerializer.DeserializeAsync<AddBookDto>(req.Body);
 
+        if(string.IsNullOrEmpty(addBook.title) || string.IsNullOrEmpty(addBook.author))
+        {
+            var badRequestResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+            badRequestResponse.WriteString("Fields 'title' and 'author' must not be null or empty");
+            return badRequestResponse;
+        }
+
         Book addedBook = await this._bookService.AddBook(addBook.title, addBook.author);
 
         var response = req.CreateResponse(HttpStatusCode.OK);
