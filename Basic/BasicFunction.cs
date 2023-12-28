@@ -30,17 +30,17 @@ public class BasicFunction
         return response;
     }
 
-    [Function("CreateBook")]
-    public async Task<HttpResponseData> CreateBook([HttpTrigger(AuthorizationLevel.Function, "post", Route = "book")] HttpRequestData req)
+    [Function("AddBook")]
+    public async Task<HttpResponseData> AddBook([HttpTrigger(AuthorizationLevel.Function, "post", Route = "book")] HttpRequestData req)
     {
         _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-        CreateBookDto createBook = await JsonSerializer.DeserializeAsync<CreateBookDto>(req.Body);
+        AddBookDto addBook = await JsonSerializer.DeserializeAsync<AddBookDto>(req.Body);
 
-        Book createdBook = await this._bookService.CreateBook(createBook.title, createBook.author);
+        Book addedBook = await this._bookService.AddBook(addBook.title, addBook.author);
 
         var response = req.CreateResponse(HttpStatusCode.OK);
-        response.WriteString(createdBook.ToString());
+        await response.WriteAsJsonAsync(addedBook);
 
         return response;
     }

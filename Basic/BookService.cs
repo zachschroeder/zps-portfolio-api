@@ -30,7 +30,7 @@ public class BookService : IBookService
         return bookList;
     }
 
-    public async Task<Book> CreateBook(string title, string author)
+    public async Task<Book> AddBook(string title, string author)
     {
         Book bookToCreate = new(Guid.NewGuid(), title, author);
 
