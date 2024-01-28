@@ -1,4 +1,4 @@
-﻿namespace Portfolio.Basic;
+﻿namespace Portfolio.Book;
 
 public interface IBookService
 {

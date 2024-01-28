@@ -1,12 +1,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Portfolio.Basic;
+using Portfolio.Book;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
-    .ConfigureServices(s =>
+    .ConfigureServices(services =>
     {
-        s.AddScoped<IBookService, BookService>();
+        services.AddScoped<IBookService, BookService>();
     })
     .Build();
 

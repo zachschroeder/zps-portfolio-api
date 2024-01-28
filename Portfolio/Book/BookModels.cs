@@ -1,4 +1,4 @@
-﻿namespace Portfolio.Basic;
+﻿namespace Portfolio.Book;
 
 public record Book(Guid id, string title, string author);
 

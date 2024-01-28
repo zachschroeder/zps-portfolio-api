@@ -1,4 +1,4 @@
-﻿namespace Portfolio.Basic;
+﻿namespace Portfolio.Book;
 
 using Microsoft.Azure.Cosmos;
 

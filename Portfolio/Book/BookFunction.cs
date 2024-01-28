@@ -1,4 +1,4 @@
-namespace Portfolio.Basic;
+namespace Portfolio.Book;
 
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -37,7 +37,7 @@ public class BasicFunction
 
         AddBookDto addBook = await JsonSerializer.DeserializeAsync<AddBookDto>(req.Body);
 
-        if(string.IsNullOrEmpty(addBook.title) || string.IsNullOrEmpty(addBook.author))
+        if (string.IsNullOrEmpty(addBook.title) || string.IsNullOrEmpty(addBook.author))
         {
             var badRequestResponse = req.CreateResponse(HttpStatusCode.BadRequest);
             badRequestResponse.WriteString("Fields 'title' and 'author' must not be null or empty");
