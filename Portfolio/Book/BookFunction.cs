@@ -6,14 +6,14 @@ using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
 
-public class BasicFunction
+public class BookFunction
 {
     private readonly ILogger _logger;
     private readonly IBookService _bookService;
 
-    public BasicFunction(ILoggerFactory loggerFactory, IBookService bookService)
+    public BookFunction(ILoggerFactory loggerFactory, IBookService bookService)
     {
-        _logger = loggerFactory.CreateLogger<BasicFunction>();
+        _logger = loggerFactory.CreateLogger<BookFunction>();
         this._bookService = bookService;
     }
 
