@@ -1,6 +1,7 @@
 ﻿namespace Portfolio.Book;
 
 using Microsoft.Azure.Cosmos;
+using System.Net;
 
 public class BookService : IBookService
 {
@@ -35,7 +36,27 @@ public class BookService : IBookService
         Book bookToCreate = new(Guid.NewGuid(), title, author);
 
         await this.container.CreateItemAsync(bookToCreate);
-        
+
         return bookToCreate;
+    }
+
+    public async Task<HttpStatusCode> DeleteBook(Guid id)
+    {
+        try
+        {
+            var response = await this.container.DeleteItemAsync<Book>(id.ToString(), new PartitionKey(id.ToString()));
+
+            if (response.StatusCode == HttpStatusCode.NoContent)
+                return HttpStatusCode.NoContent;
+
+            return HttpStatusCode.InternalServerError;
+        }
+        catch (Exception ex)
+        {
+            if (ex is CosmosException && ex.Message.Contains("NotFound (404)"))
+                return HttpStatusCode.NotFound;
+
+            return HttpStatusCode.InternalServerError;
+        }
     }
 }

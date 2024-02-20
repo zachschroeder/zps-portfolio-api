@@ -51,4 +51,28 @@ public class BookFunction
 
         return response;
     }
+
+    [Function("DeleteBook")]
+    public async Task<HttpResponseData> DeleteBook([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "book")] HttpRequestData req)
+    {
+        _logger.LogInformation("C# HTTP trigger function processed a request.");
+
+        Guid deleteBookId;
+        try
+        {
+            deleteBookId = await JsonSerializer.DeserializeAsync<Guid>(req.Body);
+
+        }
+        catch (Exception ex)
+        {
+            var badRequestResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+            badRequestResponse.WriteString("Invalid ID given");
+            return badRequestResponse;
+        }
+
+        var resultStatus = await this._bookService.DeleteBook(deleteBookId);
+
+        var response = req.CreateResponse(resultStatus);
+        return response;
+    }
 }
