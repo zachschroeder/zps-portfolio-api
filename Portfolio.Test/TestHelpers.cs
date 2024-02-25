@@ -27,6 +27,30 @@ public static class TestHelpers
 
         return request.Object;
     }
+
+    public static HttpRequestData CreateRequest()
+    {
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddFunctionsWorkerDefaults();
+
+        var context = new Mock<FunctionContext>();
+        context.SetupProperty(context => context.InstanceServices, serviceCollection.BuildServiceProvider());
+
+        var request = new Mock<HttpRequestData>(context.Object);
+        request.Setup(r => r.CreateResponse()).Returns(new MockHttpResponseData(context.Object));
+
+        return request.Object;
+    }
+
+    public static T GetObjectFromStream<T>(Stream stream) where T: class
+    {
+        using (StreamReader reader = new StreamReader(stream))
+        using (JsonTextReader jsonReader = new JsonTextReader(reader))
+        {
+            JsonSerializer ser = new JsonSerializer();
+            return ser.Deserialize<T>(jsonReader);
+        }
+    }
 }
 
 public class MockHttpResponseData : HttpResponseData

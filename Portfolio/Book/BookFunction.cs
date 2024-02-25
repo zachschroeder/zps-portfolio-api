@@ -46,8 +46,9 @@ public class BookFunction
 
         Book addedBook = await this._bookService.AddBook(addBook.title, addBook.author);
 
-        var response = req.CreateResponse(HttpStatusCode.OK);
+        var response = req.CreateResponse();
         await response.WriteAsJsonAsync(addedBook);
+        response.StatusCode = HttpStatusCode.Created;
 
         return response;
     }
