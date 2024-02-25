@@ -44,11 +44,12 @@ public static class TestHelpers
 
     public static T GetObjectFromStream<T>(Stream stream) where T: class
     {
-        using (StreamReader reader = new StreamReader(stream))
-        using (JsonTextReader jsonReader = new JsonTextReader(reader))
+        stream.Position = 0;
+        using (var reader = new StreamReader(stream))
         {
-            JsonSerializer ser = new JsonSerializer();
-            return ser.Deserialize<T>(jsonReader);
+            var json = reader.ReadToEnd();
+            var deserializedObject = JsonConvert.DeserializeObject<T>(json);
+            return deserializedObject!;
         }
     }
 }

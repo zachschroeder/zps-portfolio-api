@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Portfolio.Book;
 using System.IO;
 using System.Net;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class BookFunctionTests
 {
@@ -45,13 +46,16 @@ public class BookFunctionTests
         var addBook = new AddBookDto("Dune", "Frank Herbert");
         var request = TestHelpers.CreateRequest(addBook);
 
+        this._mockBookService.Setup(s => s.AddBook(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(new Book(Guid.NewGuid(), addBook.title, addBook.author));
+
         // Act
         var response = await _bookFunction.AddBook(request);
 
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-       
-        Book addedBook = TestHelpers.GetObjectFromStream<Book>(request.Body);
+
+        var addedBook = TestHelpers.GetObjectFromStream<Book>(response.Body);
         Assert.Equal(addBook.title, addedBook.title);
     }
 
@@ -64,6 +68,38 @@ public class BookFunctionTests
 
         // Act
         var response = await _bookFunction.AddBook(request);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Theory]
+    [InlineData(HttpStatusCode.NoContent)]
+    [InlineData(HttpStatusCode.NotFound)]
+    public async Task DeleteBookReturnsStatusFromService(HttpStatusCode statusCode)
+    {
+        // Arrange
+        var deleteBook = new DeleteBookDto(Guid.NewGuid());
+        var request = TestHelpers.CreateRequest(deleteBook);
+
+        this._mockBookService.Setup(s => s.DeleteBook(It.IsAny<Guid>()))
+            .ReturnsAsync(statusCode);
+
+        // Act
+        var response = await _bookFunction.DeleteBook(request);
+
+        // Assert
+        Assert.Equal(statusCode, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task DeleteBookReturnsBadRequestForInvalidRequestData()
+    {
+        // Arrange
+        var request = TestHelpers.CreateRequest("InvalidDataDummyString");
+
+        // Act
+        var response = await _bookFunction.DeleteBook(request);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);

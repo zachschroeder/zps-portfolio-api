@@ -58,10 +58,10 @@ public class BookFunction
     {
         _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-        Guid deleteBookId;
+        DeleteBookDto deleteBook;
         try
         {
-            deleteBookId = await JsonSerializer.DeserializeAsync<Guid>(req.Body);
+            deleteBook = await JsonSerializer.DeserializeAsync<DeleteBookDto>(req.Body);
 
         }
         catch (Exception ex)
@@ -71,7 +71,7 @@ public class BookFunction
             return badRequestResponse;
         }
 
-        var resultStatus = await this._bookService.DeleteBook(deleteBookId);
+        var resultStatus = await this._bookService.DeleteBook(deleteBook.id);
 
         var response = req.CreateResponse(resultStatus);
         return response;
