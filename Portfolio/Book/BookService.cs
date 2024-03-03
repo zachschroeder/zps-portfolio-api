@@ -46,7 +46,7 @@ public class BookService : IBookService
         }
         catch (Exception ex)
         {
-            if (ex is CosmosException && ex.Message.Contains("NotFound (404)"))
+            if (ex is CosmosException cosmosException && cosmosException.StatusCode.Equals(HttpStatusCode.NotFound))
                 return HttpStatusCode.NotFound;
 
             return HttpStatusCode.InternalServerError;
