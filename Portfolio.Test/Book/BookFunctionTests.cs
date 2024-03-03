@@ -10,10 +10,10 @@ public class BookFunctionTests
     private readonly BookFunction _bookFunction;
     private readonly Mock<IBookService> _mockBookService;
 
-    private readonly List<Portfolio.Book.Book> _mockBooks = new()
+    private readonly List<Book> _mockBooks = new()
     {
-        new Portfolio.Book.Book(Guid.NewGuid(), "Green Eggs and Ham", "Dr. Seuss"),
-        new Portfolio.Book.Book(Guid.NewGuid(), "The Hobbit", "J.R.R Tolkien")
+        new Book(Guid.NewGuid(), "Green Eggs and Ham", "Dr. Seuss"),
+        new Book(Guid.NewGuid(), "The Hobbit", "J.R.R Tolkien")
     };
 
     public BookFunctionTests()
@@ -44,7 +44,7 @@ public class BookFunctionTests
         var request = TestHelpers.CreateRequest(addBook);
 
         this._mockBookService.Setup(s => s.AddBook(It.IsAny<string>(), It.IsAny<string>()))
-            .ReturnsAsync(new Portfolio.Book.Book(Guid.NewGuid(), addBook.title, addBook.author));
+            .ReturnsAsync(new Book(Guid.NewGuid(), addBook.title, addBook.author));
 
         // Act
         var response = await _bookFunction.AddBook(request);
@@ -52,7 +52,7 @@ public class BookFunctionTests
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 
-        var addedBook = TestHelpers.GetObjectFromStream<Portfolio.Book.Book>(response.Body);
+        var addedBook = TestHelpers.GetObjectFromStream<Book>(response.Body);
         Assert.Equal(addBook.title, addedBook.title);
     }
 
