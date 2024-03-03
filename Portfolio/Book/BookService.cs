@@ -26,11 +26,11 @@ public class BookService : IBookService
 
     public async Task<Book> AddBook(string title, string author)
     {
-        Book bookToCreate = new(Guid.NewGuid(), title, author);
+        Book bookToAdd = new(Guid.NewGuid(), title, author);
 
-        await this._bookContainer.CreateItemAsync(bookToCreate);
+        var addedBook = await this._bookContainer.CreateItemAsync(bookToAdd);
 
-        return bookToCreate;
+        return addedBook;
     }
 
     public async Task<HttpStatusCode> DeleteBook(Guid id)

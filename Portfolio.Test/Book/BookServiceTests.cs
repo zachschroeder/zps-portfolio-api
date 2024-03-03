@@ -36,10 +36,19 @@ public class BookServiceTests
     public async Task AddBookShouldReturnBook()
     {
         // Arrange
+        var mockResponse = new Mock<ItemResponse<Book>>();
+        mockResponse.Setup(r => r.Resource).Returns(_mockBooks[0]);
+
+        this._mockBookContainer.Setup(s => s.CreateItemAsync(It.IsAny<Book>()))
+            .ReturnsAsync(mockResponse.Object);
 
         // Act
+        var book = await this._bookService.AddBook(_mockBooks[0].title, _mockBooks[0].author);
 
         // Assert
+        Assert.Equal(_mockBooks[0].title, book.title);
+        Assert.Equal(_mockBooks[0].author, book.author);
+        Assert.NotEqual(_mockBooks[0].id, book.id); // ID will be created in the service
     }
 
     [Fact]
