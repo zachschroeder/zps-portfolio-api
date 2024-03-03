@@ -1,4 +1,4 @@
-namespace Portfolio.Test;
+namespace Portfolio.Test.Book;
 
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
