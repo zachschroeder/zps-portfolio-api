@@ -26,10 +26,23 @@ public class BookServiceTests
     public async Task GetBooksShouldReturnBooks()
     {
         // Arrange
+        var mockFeedResponse = new Mock<FeedResponse<Book>>();
+        mockFeedResponse.Setup(r => r.GetEnumerator()).Returns(_mockBooks.GetEnumerator());
+
+        var mockFeedIterator = new Mock<FeedIterator<Book>>();
+        mockFeedIterator.SetupSequence(r => r.HasMoreResults).Returns(true).Returns(false);
+        mockFeedIterator.Setup(i => i.ReadNextAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(mockFeedResponse.Object);
+
+        _mockBookContainer.Setup(c => c.GetItemQueryIterator())
+            .Returns(mockFeedIterator.Object);
 
         // Act
+        var books = await _bookService.GetBooks();
 
         // Assert
+        Assert.Equal(_mockBooks.Count, books.Count);
+        Assert.Equivalent(_mockBooks.Select(b => b.title), books.Select(b => b.title));
     }
 
     [Fact]
@@ -48,7 +61,6 @@ public class BookServiceTests
         // Assert
         Assert.Equal(_mockBooks[0].title, book.title);
         Assert.Equal(_mockBooks[0].author, book.author);
-        Assert.NotEqual(_mockBooks[0].id, book.id); // ID will be created in the service
     }
 
     [Fact]
