@@ -7,6 +7,7 @@ var host = new HostBuilder()
     .ConfigureServices(services =>
     {
         services.AddScoped<IBookService, BookService>();
+        services.AddSingleton<IBookContainer, BookContainer>();
     })
     .Build();
 

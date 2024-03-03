@@ -5,23 +5,16 @@ using System.Net;
 
 public class BookService : IBookService
 {
-    private CosmosClient client;
-    private Database database;
-    private Container container;
+    private IBookContainer _bookContainer;
 
-    public BookService()
+    public BookService(IBookContainer bookContainer)
     {
-        var EndpointUri = Environment.GetEnvironmentVariable("CosmosEndpoint");
-        var PrimaryKey = Environment.GetEnvironmentVariable("CosmosPrimaryKey");
-
-        this.client = new CosmosClient(EndpointUri, PrimaryKey);
-        this.database = client.GetDatabase("basic-db");
-        this.container = database.GetContainer("books");
+        this._bookContainer = bookContainer;
     }
 
     public async Task<List<Book>> GetBooks()
     {
-        var iterator = this.container.GetItemQueryIterator<Book>();
+        var iterator = this._bookContainer.GetItemQueryIterator();
         List<Book> bookList = new();
 
         while (iterator.HasMoreResults)
@@ -35,7 +28,7 @@ public class BookService : IBookService
     {
         Book bookToCreate = new(Guid.NewGuid(), title, author);
 
-        await this.container.CreateItemAsync(bookToCreate);
+        await this._bookContainer.CreateItemAsync(bookToCreate);
 
         return bookToCreate;
     }
@@ -44,7 +37,7 @@ public class BookService : IBookService
     {
         try
         {
-            var response = await this.container.DeleteItemAsync<Book>(id.ToString(), new PartitionKey(id.ToString()));
+            var response = await this._bookContainer.DeleteItemAsync(id);
 
             if (response.StatusCode == HttpStatusCode.NoContent)
                 return HttpStatusCode.NoContent;
