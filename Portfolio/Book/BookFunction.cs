@@ -3,6 +3,7 @@ namespace Portfolio.Book;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using Portfolio.Infrastructure;
 using System.Net;
 using System.Text.Json;
 
@@ -35,22 +36,27 @@ public class BookFunction
     {
         _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-        AddBookDto addBook = await JsonSerializer.DeserializeAsync<AddBookDto>(req.Body);
+        try
+        {
+            var options = new JsonSerializerOptions();
+            options.Converters.Add(new StrictStringConverter());
 
-        if (string.IsNullOrEmpty(addBook.title) || string.IsNullOrEmpty(addBook.author))
+            var addBook = await JsonSerializer.DeserializeAsync<AddBookDto>(req.Body, options);
+            
+            var addedBook = await this._bookService.AddBook(addBook.title, addBook.author);
+
+            var response = req.CreateResponse();
+            await response.WriteAsJsonAsync(addedBook);
+            response.StatusCode = HttpStatusCode.Created;
+
+            return response;
+        }
+        catch (JsonException)
         {
             var badRequestResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-            badRequestResponse.WriteString("Fields 'title' and 'author' must not be null or empty");
+            badRequestResponse.WriteString($"Fields '{nameof(AddBookDto.title)}' and '{nameof(AddBookDto.author)}' are required");
             return badRequestResponse;
         }
-
-        Book addedBook = await this._bookService.AddBook(addBook.title, addBook.author);
-
-        var response = req.CreateResponse();
-        await response.WriteAsJsonAsync(addedBook);
-        response.StatusCode = HttpStatusCode.Created;
-
-        return response;
     }
 
     [Function("DeleteBook")]

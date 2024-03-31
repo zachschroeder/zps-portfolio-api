@@ -40,7 +40,11 @@ public class BookFunctionTests
     public async Task AddBookReturnsOkWithBookData()
     {
         // Arrange
-        var addBook = new AddBookDto("Dune", "Frank Herbert");
+        var addBook = new AddBookDto
+        {
+            title = "Dune",
+            author = "Frank Herbert"
+        };
         var request = TestHelpers.CreateRequest(addBook);
 
         this._mockBookService.Setup(s => s.AddBook(It.IsAny<string>(), It.IsAny<string>()))
@@ -60,7 +64,11 @@ public class BookFunctionTests
     public async Task AddBookReturnsBadRequestForEmptyString()
     {
         // Arrange
-        var addBook = new AddBookDto("ExampleTitle", "");
+        var addBook = new AddBookDto()
+        {
+            title = "ExampleTitle",
+            author = ""
+        };
         var request = TestHelpers.CreateRequest(addBook);
 
         // Act
