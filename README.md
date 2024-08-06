@@ -5,7 +5,7 @@ This project is the back-end of my personal portfolio project: https://zps-portf
 ## Testing
 Code coverage can be obtained with the following commands
 
-```
+```powershell
 # Go to correct directory
 cd .\Portfolio.Test\
 
