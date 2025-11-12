@@ -27,7 +27,7 @@ public class BookFunctionTests
     {
         // Arrange
         var request = TestHelpers.CreateRequest();
-        this._mockBookService.Setup(s => s.GetBooks()).ReturnsAsync(_mockBooks);
+        _mockBookService.Setup(s => s.GetBooks()).ReturnsAsync(_mockBooks);
 
         // Act
         var response = await _bookFunction.GetBooks(request);
@@ -47,7 +47,7 @@ public class BookFunctionTests
         };
         var request = TestHelpers.CreateRequest(addBook);
 
-        this._mockBookService.Setup(s => s.AddBook(It.IsAny<string>(), It.IsAny<string>()))
+        _mockBookService.Setup(s => s.AddBook(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(new Book(Guid.NewGuid(), addBook.title, addBook.author));
 
         // Act
@@ -87,7 +87,7 @@ public class BookFunctionTests
         var deleteBook = new DeleteBookDto(Guid.NewGuid());
         var request = TestHelpers.CreateRequest(deleteBook);
 
-        this._mockBookService.Setup(s => s.DeleteBook(It.IsAny<Guid>()))
+        _mockBookService.Setup(s => s.DeleteBook(It.IsAny<Guid>()))
             .ReturnsAsync(statusCode);
 
         // Act

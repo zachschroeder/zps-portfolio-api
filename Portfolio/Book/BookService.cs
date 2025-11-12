@@ -1,21 +1,14 @@
 ﻿namespace Portfolio.Book;
 
-using Microsoft.Azure.Cosmos;
 using System.Net;
+using Microsoft.Azure.Cosmos;
 
-public class BookService : IBookService
+public class BookService(IBookContainer bookContainer) : IBookService
 {
-    private IBookContainer _bookContainer;
-
-    public BookService(IBookContainer bookContainer)
-    {
-        this._bookContainer = bookContainer;
-    }
-
     public async Task<List<Book>> GetBooks()
     {
-        var iterator = this._bookContainer.GetItemQueryIterator();
-        List<Book> bookList = new();
+        var iterator = bookContainer.GetItemQueryIterator();
+        List<Book> bookList = [];
 
         while (iterator.HasMoreResults)
             foreach (var item in await iterator.ReadNextAsync().ConfigureAwait(false))
@@ -28,7 +21,7 @@ public class BookService : IBookService
     {
         Book bookToAdd = new(Guid.NewGuid(), title, author);
 
-        var addedBook = await this._bookContainer.CreateItemAsync(bookToAdd);
+        var addedBook = await bookContainer.CreateItemAsync(bookToAdd);
 
         return addedBook;
     }
@@ -37,7 +30,7 @@ public class BookService : IBookService
     {
         try
         {
-            var response = await this._bookContainer.DeleteItemAsync(id);
+            var response = await bookContainer.DeleteItemAsync(id);
 
             if (response.StatusCode == HttpStatusCode.NoContent)
                 return HttpStatusCode.NoContent;
@@ -46,7 +39,7 @@ public class BookService : IBookService
         }
         catch (Exception ex)
         {
-            if (ex is CosmosException cosmosException && cosmosException.StatusCode.Equals(HttpStatusCode.NotFound))
+            if (ex is CosmosException { StatusCode: HttpStatusCode.NotFound })
                 return HttpStatusCode.NotFound;
 
             return HttpStatusCode.InternalServerError;

@@ -10,16 +10,16 @@ public class BookServiceTests
     private readonly BookService _bookService;
     private readonly Mock<IBookContainer> _mockBookContainer;
 
-    private readonly List<Book> _mockBooks = new()
-    {
-        new Book(Guid.NewGuid(), "Green Eggs and Ham", "Dr. Seuss"),
-        new Book(Guid.NewGuid(), "The Hobbit", "J.R.R Tolkien")
-    };
+    private readonly List<Book> _mockBooks =
+    [
+        new(Guid.NewGuid(), "Green Eggs and Ham", "Dr. Seuss"),
+        new(Guid.NewGuid(), "The Hobbit", "J.R.R Tolkien")
+    ];
 
     public BookServiceTests()
     {
-        this._mockBookContainer = new Mock<IBookContainer>();
-        this._bookService = new BookService(_mockBookContainer.Object);
+        _mockBookContainer = new Mock<IBookContainer>();
+        _bookService = new BookService(_mockBookContainer.Object);
     }
 
     [Fact]
@@ -52,11 +52,11 @@ public class BookServiceTests
         var mockResponse = new Mock<ItemResponse<Book>>();
         mockResponse.Setup(r => r.Resource).Returns(_mockBooks[0]);
 
-        this._mockBookContainer.Setup(s => s.CreateItemAsync(It.IsAny<Book>()))
+        _mockBookContainer.Setup(s => s.CreateItemAsync(It.IsAny<Book>()))
             .ReturnsAsync(mockResponse.Object);
 
         // Act
-        var book = await this._bookService.AddBook(_mockBooks[0].title, _mockBooks[0].author);
+        var book = await _bookService.AddBook(_mockBooks[0].title, _mockBooks[0].author);
 
         // Assert
         Assert.Equal(_mockBooks[0].title, book.title);
@@ -70,11 +70,11 @@ public class BookServiceTests
         var mockResponse = new Mock<ItemResponse<Book>>();
         mockResponse.Setup(r => r.StatusCode).Returns(HttpStatusCode.NoContent);
 
-        this._mockBookContainer.Setup(s => s.DeleteItemAsync(It.IsAny<Guid>()))
+        _mockBookContainer.Setup(s => s.DeleteItemAsync(It.IsAny<Guid>()))
             .ReturnsAsync(mockResponse.Object);
 
         // Act
-        var status = await this._bookService.DeleteBook(Guid.NewGuid());
+        var status = await _bookService.DeleteBook(Guid.NewGuid());
 
         // Assert
         Assert.Equal(HttpStatusCode.NoContent, status);
@@ -84,11 +84,11 @@ public class BookServiceTests
     public async Task DeleteBookShouldReturnsNotFoundOnCosmosException()
     {
         // Arrange
-        this._mockBookContainer.Setup(s => s.DeleteItemAsync(It.IsAny<Guid>()))
+        _mockBookContainer.Setup(s => s.DeleteItemAsync(It.IsAny<Guid>()))
             .ThrowsAsync(new CosmosException("BookNotFound", HttpStatusCode.NotFound, 0, "0", 0));
 
         // Act
-        var status = await this._bookService.DeleteBook(Guid.NewGuid());
+        var status = await _bookService.DeleteBook(Guid.NewGuid());
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, status);
@@ -101,11 +101,11 @@ public class BookServiceTests
         var mockResponse = new Mock<ItemResponse<Book>>();
         mockResponse.Setup(r => r.StatusCode).Returns(HttpStatusCode.InternalServerError);
 
-        this._mockBookContainer.Setup(s => s.DeleteItemAsync(It.IsAny<Guid>()))
+        _mockBookContainer.Setup(s => s.DeleteItemAsync(It.IsAny<Guid>()))
             .ReturnsAsync(mockResponse.Object);
 
         // Act
-        var status = await this._bookService.DeleteBook(Guid.NewGuid());
+        var status = await _bookService.DeleteBook(Guid.NewGuid());
 
         // Assert
         Assert.Equal(HttpStatusCode.InternalServerError, status);
@@ -115,11 +115,11 @@ public class BookServiceTests
     public async Task DeleteBookShouldReturnsInternalServerErrorOnException()
     {
         // Arrange
-        this._mockBookContainer.Setup(s => s.DeleteItemAsync(It.IsAny<Guid>()))
+        _mockBookContainer.Setup(s => s.DeleteItemAsync(It.IsAny<Guid>()))
             .ThrowsAsync(new Exception("GenericException"));
 
         // Act
-        var status = await this._bookService.DeleteBook(Guid.NewGuid());
+        var status = await _bookService.DeleteBook(Guid.NewGuid());
 
         // Assert
         Assert.Equal(HttpStatusCode.InternalServerError, status);

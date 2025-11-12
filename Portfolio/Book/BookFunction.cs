@@ -1,11 +1,11 @@
 namespace Portfolio.Book;
 
+using System.Net;
+using System.Text.Json;
+using Infrastructure;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
-using Portfolio.Infrastructure;
-using System.Net;
-using System.Text.Json;
 
 public class BookFunction
 {
@@ -15,7 +15,7 @@ public class BookFunction
     public BookFunction(ILoggerFactory loggerFactory, IBookService bookService)
     {
         _logger = loggerFactory.CreateLogger<BookFunction>();
-        this._bookService = bookService;
+        _bookService = bookService;
     }
 
     [Function("Books")]
@@ -23,7 +23,7 @@ public class BookFunction
     {
         _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-        var bookList = await this._bookService.GetBooks();
+        var bookList = await _bookService.GetBooks();
 
         var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(bookList);
@@ -43,7 +43,7 @@ public class BookFunction
 
             var addBook = await JsonSerializer.DeserializeAsync<AddBookDto>(req.Body, options);
             
-            var addedBook = await this._bookService.AddBook(addBook.title, addBook.author);
+            var addedBook = await _bookService.AddBook(addBook.title, addBook.author);
 
             var response = req.CreateResponse();
             await response.WriteAsJsonAsync(addedBook);
@@ -77,7 +77,7 @@ public class BookFunction
             return badRequestResponse;
         }
 
-        var resultStatus = await this._bookService.DeleteBook(deleteBook.id);
+        var resultStatus = await _bookService.DeleteBook(deleteBook.id);
 
         var response = req.CreateResponse(resultStatus);
         return response;
