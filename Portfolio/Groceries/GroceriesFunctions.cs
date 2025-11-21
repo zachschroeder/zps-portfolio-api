@@ -1,6 +1,7 @@
 namespace Portfolio.Groceries;
 
 using System.Net;
+using System.Text.Json;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
@@ -15,5 +16,25 @@ public class GroceriesFunctions(IGroceriesService groceriesService)
         await response.WriteAsJsonAsync(groceries);
         return response;
     }
+    
+    [Function(nameof(AddGroceryItem))]
+    public async Task<HttpResponseData> AddGroceryItem([HttpTrigger(AuthorizationLevel.Function, "post", Route = "grocery-item")] HttpRequestData req)
+    {
+        try
+        {
+            var addGroceryItem = await req.ReadFromJsonAsync<AddGroceryItemDto>();
+            if (addGroceryItem == null)
+                return req.CreateResponse(HttpStatusCode.BadRequest);
 
+            var addedGroceryItem = await groceriesService.AddGroceryItem(addGroceryItem);
+
+            var response = req.CreateResponse(HttpStatusCode.Created);
+            await response.WriteAsJsonAsync(addedGroceryItem);
+            return response;
+        }
+        catch (JsonException)
+        {
+            return req.CreateResponse(HttpStatusCode.BadRequest);
+        }        
+    }
 }
