@@ -4,12 +4,16 @@ using System.Net;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
-public class GroceriesFunctions
+public class GroceriesFunctions(IGroceriesService groceriesService)
 {
     [Function(nameof(GetGroceries))]
-    public HttpResponseData GetGroceries([HttpTrigger(AuthorizationLevel.Function, "get", Route = "groceries")] HttpRequestData req)
+    public async Task<HttpResponseData> GetGroceries([HttpTrigger(AuthorizationLevel.Function, "get", Route = "groceries")] HttpRequestData req)
     {
-        return req.CreateResponse(HttpStatusCode.OK);
+        var groceries = groceriesService.GetGroceries();
+        
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        await response.WriteAsJsonAsync(groceries);
+        return response;
     }
 
 }

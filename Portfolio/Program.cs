@@ -9,6 +9,7 @@ var host = new HostBuilder()
     {
         services.AddScoped<IBookService, BookService>()
             .AddSingleton<IBookContainer, BookContainer>()
+            .AddScoped<IGroceriesService, GroceriesService>()
             .AddSingleton<IGroceriesContainer, GroceriesContainer>();
     })
     .Build();
