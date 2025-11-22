@@ -1,13 +1,16 @@
 ﻿namespace Portfolio.Book;
 
 using System.Net;
+using Infrastructure;
 using Microsoft.Azure.Cosmos;
 
-public class BookService(IBookContainer bookContainer) : IBookService
+public class BookService(IContainerRetriever containerRetriever) : IBookService
 {
+    private readonly Container _container = containerRetriever.GetContainer("books");
+    
     public async Task<List<Book>> GetBooks()
     {
-        var iterator = bookContainer.GetItemQueryIterator();
+        var iterator = _container.GetItemQueryIterator<Book>();
         List<Book> bookList = [];
 
         while (iterator.HasMoreResults)
@@ -21,7 +24,7 @@ public class BookService(IBookContainer bookContainer) : IBookService
     {
         Book bookToAdd = new(Guid.NewGuid(), title, author);
 
-        var addedBook = await bookContainer.CreateItemAsync(bookToAdd);
+        var addedBook = await _container.CreateItemAsync(bookToAdd);
 
         return addedBook;
     }
@@ -30,7 +33,7 @@ public class BookService(IBookContainer bookContainer) : IBookService
     {
         try
         {
-            var response = await bookContainer.DeleteItemAsync(id);
+            var response = await _container.DeleteItemAsync<Book>(id.ToString(), new PartitionKey(id.ToString()));
 
             if (response.StatusCode == HttpStatusCode.NoContent)
                 return HttpStatusCode.NoContent;
