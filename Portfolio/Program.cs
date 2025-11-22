@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Portfolio.Book;
 using Portfolio.Groceries;
+using Portfolio.Infrastructure;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
@@ -10,7 +11,7 @@ var host = new HostBuilder()
         services.AddScoped<IBookService, BookService>()
             .AddSingleton<IBookContainer, BookContainer>()
             .AddScoped<IGroceriesService, GroceriesService>()
-            .AddSingleton<IGroceriesContainer, GroceriesContainer>();
+            .AddSingleton<IContainerRetriever, ContainerRetriever>();
     })
     .Build();
 

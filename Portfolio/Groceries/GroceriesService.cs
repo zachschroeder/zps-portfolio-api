@@ -1,13 +1,16 @@
 ﻿namespace Portfolio.Groceries;
 
 using System.Net;
+using Infrastructure;
 using Microsoft.Azure.Cosmos;
 
-public class GroceriesService(IGroceriesContainer groceriesContainer) : IGroceriesService
+public class GroceriesService(IContainerRetriever containerRetriever) : IGroceriesService
 {
+    private readonly Container _container = containerRetriever.GetContainer("groceries");
+
     public async Task<List<GroceryItem>> GetGroceries()
     {
-        var iterator = groceriesContainer.GetItemQueryIterator();
+        var iterator = _container.GetItemQueryIterator<GroceryItem>();
         List<GroceryItem> groceries = [];
 
         while (iterator.HasMoreResults)
@@ -28,7 +31,7 @@ public class GroceriesService(IGroceriesContainer groceriesContainer) : IGroceri
         var groceryItem = new GroceryItem(Guid.NewGuid(), addGroceryItem.Name, false, addGroceryItem.MealSection,
             addGroceryItem.StoreSection);
 
-        var addedGroceryItem = await groceriesContainer.CreateItemAsync(groceryItem);
+        var addedGroceryItem = await _container.CreateItemAsync(groceryItem);
 
         return addedGroceryItem;
     }
@@ -37,7 +40,7 @@ public class GroceriesService(IGroceriesContainer groceriesContainer) : IGroceri
     {
         try
         {
-            var response = await groceriesContainer.DeleteItemAsync(id);
+            var response = await _container.DeleteItemAsync<GroceryItem>(id.ToString(),  new PartitionKey(id.ToString()));
 
             if (response.StatusCode == HttpStatusCode.NoContent)
                 return HttpStatusCode.NoContent;
