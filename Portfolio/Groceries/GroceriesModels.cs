@@ -14,8 +14,9 @@ public class GroceryItem(Guid id, string name, bool isChecked, string mealSectio
     public GroceryItemFrontendDto ToFrontendDto() => new(id, Name, IsChecked);
 }
 
-public class AddGroceryItemDto(string name, string mealSection, string storeSection)
+public class AddGroceryItemDto(Guid id, string name, string mealSection, string storeSection)
 {
+    public Guid Id { get; } = id;
     public string Name { get; } = name;
     public string MealSection { get; set; } = mealSection;
     public string StoreSection { get; set; } = storeSection;

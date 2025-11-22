@@ -28,7 +28,7 @@ public class GroceriesService(IContainerRetriever containerRetriever, IGroceries
         if (string.IsNullOrWhiteSpace(addGroceryItem.StoreSection))
             addGroceryItem.StoreSection = "Uncategorized";
         
-        var groceryItem = new GroceryItem(Guid.NewGuid(), addGroceryItem.Name, false, addGroceryItem.MealSection,
+        var groceryItem = new GroceryItem(addGroceryItem.Id, addGroceryItem.Name, false, addGroceryItem.MealSection,
             addGroceryItem.StoreSection);
 
         var addedGroceryItem = await _container.CreateItemAsync(groceryItem);
