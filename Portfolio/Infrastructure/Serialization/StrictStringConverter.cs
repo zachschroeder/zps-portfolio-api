@@ -1,4 +1,4 @@
-﻿namespace Portfolio.Infrastructure;
+﻿namespace Portfolio.Infrastructure.Serialization;
 
 using System;
 using System.Text.Json;
