@@ -38,4 +38,25 @@ public class GroceriesFunctions(IGroceriesService groceriesService, CamelCaseSer
             return req.CreateResponse(HttpStatusCode.BadRequest);
         }        
     }
+    
+    [Function(nameof(DeleteGroceryItem))]
+    public async Task<HttpResponseData> DeleteGroceryItem([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "grocery-item")] HttpRequestData req)
+    {
+        DeleteGroceryItemDto? deleteGroceryItem;
+        try
+        {
+            deleteGroceryItem = await req.ReadFromJsonAsync<DeleteGroceryItemDto>();
+        }
+        catch (JsonException)
+        {
+            return req.CreateResponse(HttpStatusCode.BadRequest);
+        }
+        
+        if (deleteGroceryItem == null)
+            return req.CreateResponse(HttpStatusCode.BadRequest);
+        
+        var resultStatus = await groceriesService.DeleteGroceryItem(deleteGroceryItem.Id);
+        var response = req.CreateResponse(resultStatus);
+        return response;
+    }
 }

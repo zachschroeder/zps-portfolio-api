@@ -16,10 +16,12 @@ public class GroceryItem(Guid id, string name, bool isChecked, string mealSectio
 
 public class AddGroceryItemDto(string name, string mealSection, string storeSection)
 {
-    public string Name { get; set; } = name;
+    public string Name { get; } = name;
     public string MealSection { get; set; } = mealSection;
     public string StoreSection { get; set; } = storeSection;
 }
+
+public record DeleteGroceryItemDto(Guid Id);
 
 public class GroceryItemFrontendDto(Guid id, string name, bool isChecked)
 {
