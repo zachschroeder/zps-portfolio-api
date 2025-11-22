@@ -4,11 +4,11 @@ using System.Net;
 using Infrastructure;
 using Microsoft.Azure.Cosmos;
 
-public class GroceriesService(IContainerRetriever containerRetriever) : IGroceriesService
+public class GroceriesService(IContainerRetriever containerRetriever, IGroceriesStateComposer stateComposer) : IGroceriesService
 {
     private readonly Container _container = containerRetriever.GetContainer("groceries");
 
-    public async Task<List<GroceryItem>> GetGroceries()
+    public async Task<GroceriesState> GetGroceries()
     {
         var iterator = _container.GetItemQueryIterator<GroceryItem>();
         List<GroceryItem> groceries = [];
@@ -17,7 +17,7 @@ public class GroceriesService(IContainerRetriever containerRetriever) : IGroceri
             foreach (var item in await iterator.ReadNextAsync().ConfigureAwait(false))
                 groceries.Add(item);
 
-        return groceries;
+        return stateComposer.ComposeState(groceries);
     }
 
     public async Task<GroceryItem> AddGroceryItem(AddGroceryItemDto addGroceryItem)

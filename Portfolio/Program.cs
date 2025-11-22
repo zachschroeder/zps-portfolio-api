@@ -8,9 +8,10 @@ var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
     .ConfigureServices(services =>
     {
-        services.AddScoped<IBookService, BookService>()
+        services.AddSingleton<IContainerRetriever, ContainerRetriever>() 
+            .AddScoped<IBookService, BookService>()
             .AddScoped<IGroceriesService, GroceriesService>()
-            .AddSingleton<IContainerRetriever, ContainerRetriever>();
+            .AddScoped<IGroceriesStateComposer, GroceriesStateComposer>();
     })
     .Build();
 
