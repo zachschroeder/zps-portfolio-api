@@ -4,7 +4,7 @@ using System.Net;
 using Infrastructure;
 using Microsoft.Azure.Cosmos;
 
-public class GroceriesService(IContainerRetriever containerRetriever, IGroceriesStateComposer stateComposer) : IGroceriesService
+public class GroceriesService(IContainerRetriever containerRetriever, IGroceriesStateComposer stateComposer, IGroceriesCategorizer categorizer) : IGroceriesService
 {
     private readonly Container _container = containerRetriever.GetContainer("groceries");
 
@@ -23,10 +23,10 @@ public class GroceriesService(IContainerRetriever containerRetriever, IGroceries
     public async Task<GroceryItem> AddGroceryItem(AddGroceryItemDto addGroceryItem)
     {
         if (string.IsNullOrWhiteSpace(addGroceryItem.MealSection))
-            addGroceryItem.MealSection = "Uncategorized";
+            addGroceryItem.MealSection = Sections.Uncategorized;
         
         if (string.IsNullOrWhiteSpace(addGroceryItem.StoreSection))
-            addGroceryItem.StoreSection = "Uncategorized";
+            addGroceryItem.StoreSection = categorizer.GetStoreSection(addGroceryItem.Name);
         
         var groceryItem = new GroceryItem(addGroceryItem.Id, addGroceryItem.Name, false, addGroceryItem.MealSection,
             addGroceryItem.StoreSection);

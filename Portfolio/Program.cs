@@ -13,7 +13,8 @@ var host = new HostBuilder()
             .AddSingleton<IContainerRetriever, ContainerRetriever>() 
             .AddScoped<IBookService, BookService>()
             .AddScoped<IGroceriesService, GroceriesService>()
-            .AddScoped<IGroceriesStateComposer, GroceriesStateComposer>();
+            .AddScoped<IGroceriesStateComposer, GroceriesStateComposer>()
+            .AddSingleton<IGroceriesCategorizer, GroceriesCategorizer>();
     })
     .Build();
 
