@@ -55,4 +55,25 @@ public class GroceriesService(IContainerRetriever containerRetriever, IGroceries
             return HttpStatusCode.InternalServerError;
         }
     }
+
+    public async Task<HttpStatusCode> CheckGroceryItem(CheckGroceryItemDto checkGroceryItem)
+    {
+       var iterator = _container.GetItemQueryIterator<GroceryItem>();
+       GroceryItem? groceryItemToUpdate = null;
+
+       while (iterator.HasMoreResults)
+           foreach (var item in await iterator.ReadNextAsync().ConfigureAwait(false))
+               if (item.id == checkGroceryItem.Id)
+               {
+                   groceryItemToUpdate = item;
+                   break;
+               }
+
+       if (groceryItemToUpdate == null)
+           return HttpStatusCode.NotFound;
+
+       groceryItemToUpdate.IsChecked = checkGroceryItem.IsChecked;
+       await _container.UpsertItemAsync(groceryItemToUpdate);
+       return HttpStatusCode.Accepted;
+    }
 }

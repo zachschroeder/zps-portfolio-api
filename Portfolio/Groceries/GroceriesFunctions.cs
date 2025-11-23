@@ -59,4 +59,22 @@ public class GroceriesFunctions(IGroceriesService groceriesService, CamelCaseSer
         var response = req.CreateResponse(resultStatus);
         return response;
     }
+    
+    [Function(nameof(CheckGroceryItem))]
+    public async Task<HttpResponseData> CheckGroceryItem([HttpTrigger(AuthorizationLevel.Function, "put", Route = "grocery-item")] HttpRequestData req)
+    {
+        try
+        {
+            var checkGroceryItem = await req.ReadFromJsonAsync<CheckGroceryItemDto>();
+            if (checkGroceryItem == null)
+                return req.CreateResponse(HttpStatusCode.BadRequest);
+
+            var resultStatus = await groceriesService.CheckGroceryItem(checkGroceryItem);
+            return req.CreateResponse(resultStatus);
+        }
+        catch (JsonException)
+        {
+            return req.CreateResponse(HttpStatusCode.BadRequest);
+        }        
+    }
 }

@@ -23,6 +23,7 @@ public class AddGroceryItemDto(Guid id, string name, string mealSection, string 
 }
 
 public record DeleteGroceryItemDto(Guid Id);
+public record CheckGroceryItemDto(Guid Id, bool IsChecked);
 
 public class GroceryItemFrontendDto(Guid id, string name, bool isChecked)
 {
