@@ -15,18 +15,25 @@ public class GroceriesCategorizer : IGroceriesCategorizer
     {
         // Produce
         { "apple", Sections.Produce },
+        { "banana", Sections.Produce },
+        { "carrot", Sections.Produce },
         
         // Cans
         { "bean", Sections.Cans },
+        { "chickpea", Sections.Cans },
         
         // Grains
         { "bread", Sections.Grains },
+        { "granola", Sections.Grains },
+        { "rice", Sections.Grains },
         
         // Deli
         { "chicken", Sections.Deli },
+        { "sausage", Sections.Deli },
         
         // Dairy
-        { "milk", Sections.Dairy }
+        { "milk", Sections.Dairy },
+        { "butter", Sections.Dairy }
     };
 }
 
