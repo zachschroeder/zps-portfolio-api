@@ -33,6 +33,8 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         
         // Dairy
         { "milk", Sections.Dairy },
+        { "cream", Sections.Dairy },
+        { "cheese", Sections.Dairy },
         { "butter", Sections.Dairy }
     };
 }
