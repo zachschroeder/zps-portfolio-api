@@ -14,9 +14,11 @@ public class GroceriesCategorizer : IGroceriesCategorizer
     private readonly Dictionary<string, string> _sectionMap = new()
     {
         // Prioritized because of spelling
-        { "oz can", Sections.Cans },
+        { "canned", Sections.Cans },
         { "chickpea", Sections.Cans },
+        { "tomato paste", Sections.Cans },
         { "tortilla chip", Sections.Snacks },
+        { "oz can", Sections.Cans },
         
         // Produce -- Fruits
         { "apple", Sections.Produce },
@@ -26,6 +28,7 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "berry", Sections.Produce },
         { "lemon", Sections.Produce },
         { "orange", Sections.Produce },
+        { "pear", Sections.Produce },
         
         // Produce -- Vegetables
         { "broccoli", Sections.Produce },
@@ -36,11 +39,13 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "cucumber", Sections.Produce },
         { "garlic", Sections.Produce },
         { "green", Sections.Produce },
+        { "mushroom", Sections.Produce },
         { "onion", Sections.Produce },
         { "peas", Sections.Produce },
         { "pepper", Sections.Produce },
         { "potato", Sections.Produce },
         { "salad", Sections.Produce },
+        { "shallot", Sections.Produce },
         { "spinach", Sections.Produce },
         { "tomato", Sections.Produce },
         
@@ -77,6 +82,7 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         
         // Snacks
         { "chips", Sections.Snacks },
+        { "crackers", Sections.Snacks },
         { "hummus", Sections.Snacks },
         { "nuts", Sections.Snacks },
         { "pistachio", Sections.Snacks },
@@ -97,6 +103,7 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         
         // Dairy
         { "butter", Sections.Dairy },
+        { "burrata", Sections.Dairy },
         { "cheddar", Sections.Dairy },
         { "cheese", Sections.Dairy },
         { "cream", Sections.Dairy },
