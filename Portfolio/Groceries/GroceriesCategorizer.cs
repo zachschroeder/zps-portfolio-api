@@ -14,19 +14,23 @@ public class GroceriesCategorizer : IGroceriesCategorizer
     private readonly Dictionary<string, string> _sectionMap = new()
     {
         // Prioritized because of spelling
-        { "canned", Sections.Cans },
+        { "can", Sections.Cans },
         { "chickpea", Sections.Cans },
+        { "dried tomato", Sections.Cans },
+        { "juice", Sections.Beverages },
+        { "salted butter", Sections.Dairy },
         { "tomato paste", Sections.Cans },
         { "tortilla chip", Sections.Snacks },
-        { "oz can", Sections.Cans },
         
         // Produce -- Fruits
         { "apple", Sections.Produce },
+        { "apricot", Sections.Produce },
         { "avocado", Sections.Produce },
         { "banana", Sections.Produce },
         { "berri", Sections.Produce },
         { "berry", Sections.Produce },
         { "lemon", Sections.Produce },
+        { "lime", Sections.Produce },
         { "orange", Sections.Produce },
         { "pear", Sections.Produce },
         
@@ -50,11 +54,15 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "tomato", Sections.Produce },
         
         // Produce -- Other
+        { "basil", Sections.Produce },
+        { "cilantro", Sections.Produce },
+        { "parsley", Sections.Produce },
+        { "rosemary", Sections.Produce },
+        { "thyme", Sections.Produce },
         { "tofu", Sections.Produce },
         
         // Cans
         { "bean", Sections.Cans },
-        { "can", Sections.Cans },
         { "sauce", Sections.Cans },
         { "soup", Sections.Cans },
         
@@ -76,6 +84,7 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "oil", Sections.Baking },
         { "salt", Sections.Baking },
         { "sugar", Sections.Baking },
+        { "syrup", Sections.Baking },
         { "vanilla", Sections.Baking },
         { "vinegar", Sections.Baking },
         { "yeast", Sections.Baking },
@@ -85,10 +94,20 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "crackers", Sections.Snacks },
         { "hummus", Sections.Snacks },
         { "nuts", Sections.Snacks },
+        { "olives", Sections.Snacks },
         { "pistachio", Sections.Snacks },
         { "popcorn", Sections.Snacks },
         { "salsa", Sections.Snacks },
         { "sours", Sections.Snacks },
+        
+        // Beverages
+        { "beer", Sections.Beverages },
+        { "coke", Sections.Beverages },
+        { "pop", Sections.Beverages },
+        { "sauvignon", Sections.Beverages },
+        { "soda", Sections.Beverages },
+        { "sprite", Sections.Beverages },
+        { "wine", Sections.Beverages },
         
         // Deli
         { "bacon", Sections.Deli },
@@ -126,6 +145,7 @@ public static class Sections
     public const string Deli = "Deli";
     public const string Frozen = "Frozen";
     public const string Grains = "Grains";
+    public const string Beverages = "Beverages";
     public const string Produce = "Produce";
     public const string Snacks = "Snacks";
     public const string Uncategorized = "Uncategorized";
