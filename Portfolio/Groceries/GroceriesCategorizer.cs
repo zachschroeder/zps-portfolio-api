@@ -18,6 +18,7 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "chickpea", Sections.Cans },
         { "dried tomato", Sections.Cans },
         { "juice", Sections.Beverages },
+        { "pepperoni", Sections.Deli },
         { "salted butter", Sections.Dairy },
         { "tomato paste", Sections.Cans },
         { "tortilla chip", Sections.Snacks },
@@ -33,8 +34,10 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "lime", Sections.Produce },
         { "orange", Sections.Produce },
         { "pear", Sections.Produce },
+        { "pomegranate", Sections.Produce },
         
         // Produce -- Vegetables
+        { "arugula", Sections.Produce },
         { "broccoli", Sections.Produce },
         { "brussel", Sections.Produce },
         { "carrot", Sections.Produce },
