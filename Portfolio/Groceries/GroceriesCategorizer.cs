@@ -58,6 +58,7 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         
         // Produce -- Other
         { "basil", Sections.Produce },
+        { "chives", Sections.Produce },
         { "cilantro", Sections.Produce },
         { "parsley", Sections.Produce },
         { "rosemary", Sections.Produce },
