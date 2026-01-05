@@ -46,6 +46,7 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "cucumber", Sections.Produce },
         { "garlic", Sections.Produce },
         { "green", Sections.Produce },
+        { "leek", Sections.Produce },
         { "mushroom", Sections.Produce },
         { "onion", Sections.Produce },
         { "peas", Sections.Produce },
