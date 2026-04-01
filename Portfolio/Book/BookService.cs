@@ -4,9 +4,9 @@ using System.Net;
 using Infrastructure;
 using Microsoft.Azure.Cosmos;
 
-public class BookService(IContainerRetriever containerRetriever) : IBookService
+public class BookService(IContainerService containerService) : IBookService
 {
-    private readonly Container _container = containerRetriever.GetContainer("books");
+    private readonly Container _container = containerService.GetContainer("books");
     
     public async Task<List<Book>> GetBooks()
     {

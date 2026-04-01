@@ -77,4 +77,11 @@ public class GroceriesFunctions(IGroceriesService groceriesService, CamelCaseSer
             return req.CreateResponse(HttpStatusCode.BadRequest);
         }        
     }
+    
+    [Function(nameof(DeleteAllGroceries))]
+    public async Task<HttpResponseData> DeleteAllGroceries([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "groceries")] HttpRequestData req)
+    {
+        var resultStatus = await groceriesService.DeleteAllGroceries();
+        return req.CreateResponse(resultStatus);
+    }
 }

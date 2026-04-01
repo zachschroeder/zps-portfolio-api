@@ -2,7 +2,8 @@ namespace Portfolio.Infrastructure;
 
 using Microsoft.Azure.Cosmos;
 
-public interface IContainerRetriever
+public interface IContainerService
 {
    public Container GetContainer(string containerName); 
+   public Task<Container> RecreateContainer(string containerName);
 }

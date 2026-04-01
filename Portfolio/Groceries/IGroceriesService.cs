@@ -8,4 +8,5 @@ public interface IGroceriesService
     public Task<GroceryItem> AddGroceryItem(AddGroceryItemDto addGroceryItem);
     public Task<HttpStatusCode> DeleteGroceryItem(Guid id);
     public Task<HttpStatusCode> CheckGroceryItem(CheckGroceryItemDto checkGroceryItem);
+    public Task<HttpStatusCode> DeleteAllGroceries();
 }
