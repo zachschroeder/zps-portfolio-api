@@ -10,7 +10,7 @@ var host = new HostBuilder()
     .ConfigureServices(services =>
     {
         services.AddSingleton<CamelCaseSerializer>()
-            .AddSingleton<IContainerRetriever, ContainerRetriever>() 
+            .AddSingleton<IContainerService, ContainerService>() 
             .AddScoped<IBookService, BookService>()
             .AddScoped<IGroceriesService, GroceriesService>()
             .AddScoped<IGroceriesStateComposer, GroceriesStateComposer>()

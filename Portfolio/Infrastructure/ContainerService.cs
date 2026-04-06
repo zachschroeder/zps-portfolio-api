@@ -2,11 +2,11 @@ namespace Portfolio.Infrastructure;
 
 using Microsoft.Azure.Cosmos;
 
-public class ContainerRetriever : IContainerRetriever
+public class ContainerService : IContainerService
 {
     private Database _database;
     
-    public ContainerRetriever()
+    public ContainerService()
     {
         var cosmosEndpoint = Environment.GetEnvironmentVariable("CosmosEndpoint");
         var cosmosPrimaryKey = Environment.GetEnvironmentVariable("CosmosPrimaryKey");
@@ -18,5 +18,13 @@ public class ContainerRetriever : IContainerRetriever
     public Container GetContainer(string containerName)
     {
         return _database.GetContainer(containerName);
+    }
+    
+    public async Task<Container> RecreateContainer(string containerName)
+    {
+        var currentContainer = _database.GetContainer(containerName);
+        await currentContainer.DeleteContainerAsync();
+        var newContainerResponse = await _database.CreateContainerIfNotExistsAsync(containerName, "/id");
+        return newContainerResponse.Container;
     }
 }

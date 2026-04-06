@@ -4,9 +4,9 @@ using System.Net;
 using Infrastructure;
 using Microsoft.Azure.Cosmos;
 
-public class GroceriesService(IContainerRetriever containerRetriever, IGroceriesStateComposer stateComposer, IGroceriesCategorizer categorizer) : IGroceriesService
+public class GroceriesService(IContainerService containerService, IGroceriesStateComposer stateComposer, IGroceriesCategorizer categorizer) : IGroceriesService
 {
-    private readonly Container _container = containerRetriever.GetContainer("groceries");
+    private Container _container = containerService.GetContainer("groceries");
 
     public async Task<GroceriesState> GetGroceries()
     {
@@ -75,5 +75,11 @@ public class GroceriesService(IContainerRetriever containerRetriever, IGroceries
        groceryItemToUpdate.IsChecked = checkGroceryItem.IsChecked;
        await _container.UpsertItemAsync(groceryItemToUpdate);
        return HttpStatusCode.Accepted;
+    }
+
+    public async Task<HttpStatusCode> DeleteAllGroceries()
+    {
+        _container = await containerService.RecreateContainer("groceries");
+        return HttpStatusCode.NoContent;
     }
 }
