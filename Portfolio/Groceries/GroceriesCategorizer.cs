@@ -132,6 +132,7 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "cheese", Sections.Dairy },
         { "cream", Sections.Dairy },
         { "egg", Sections.Dairy },
+        { "feta", Sections.Dairy },
         { "milk", Sections.Dairy },
         { "parmesan", Sections.Dairy },
         { "ricotta", Sections.Dairy },
