@@ -2,13 +2,13 @@ using Portfolio.Groceries;
 
 namespace Portfolio.Test.Groceries;
 
-public class SectionComparerTests
+public class StoreSectionComparerTests
 {
     [Fact]
     public void ShouldSortProduceBeforeFrozen()
     {
         // Arrange
-        var comparer = new SectionComparer();
+        var comparer = new StoreSectionComparer();
         var list = new List<Section>()
         {
             new Section(Sections.Frozen, []),
@@ -27,7 +27,7 @@ public class SectionComparerTests
     public void ShouldSortKnownBeforeUnknown()
     {
         // Arrange
-        var comparer = new SectionComparer();
+        var comparer = new StoreSectionComparer();
         var list = new List<Section>()
         {
             new Section(Sections.Frozen, []),

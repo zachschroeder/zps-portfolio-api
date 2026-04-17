@@ -2,6 +2,8 @@ namespace Portfolio.Groceries;
 
 public class GroceriesStateComposer : IGroceriesStateComposer
 {
+    private StoreSectionComparer comparer = new StoreSectionComparer();
+
     public GroceriesState ComposeState(List<GroceryItem> groceries)
     {
         var state = new GroceriesState();
@@ -13,17 +15,23 @@ public class GroceriesStateComposer : IGroceriesStateComposer
             AddItemToView(state.StoreView, groceryItem.StoreSection, dto);
         }
 
+        state.StoreView.Sections.Sort(comparer);
+
         return state;
     }
 
-    private static void AddItemToView(GroceryView view, string sectionName, GroceryItemFrontendDto dto)
+    private static void AddItemToView(
+        GroceryView view,
+        string sectionName,
+        GroceryItemFrontendDto dto
+    )
     {
-       var section = view.Sections.FirstOrDefault(s => s.Name == sectionName);
-       if (section == null)
-       {
-           section = new Section(sectionName, []);
-           view.Sections.Add(section);
-       }
-       section.Items.Add(dto);
+        var section = view.Sections.FirstOrDefault(s => s.Name == sectionName);
+        if (section == null)
+        {
+            section = new Section(sectionName, []);
+            view.Sections.Add(section);
+        }
+        section.Items.Add(dto);
     }
 }

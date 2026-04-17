@@ -1,6 +1,6 @@
 namespace Portfolio.Groceries;
 
-public class SectionComparer : IComparer<Section>
+public class StoreSectionComparer : IComparer<Section>
 {
     private List<string> _sortOrder =
     [
