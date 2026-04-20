@@ -7,22 +7,22 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         foreach (var kvp in _sectionMap)
             if (name.Contains(kvp.Key, StringComparison.OrdinalIgnoreCase))
                 return kvp.Value;
-        
+
         return Sections.Uncategorized;
     }
-    
+
     private readonly Dictionary<string, string> _sectionMap = new()
     {
         // Prioritized because of spelling
         { "can", Sections.Cans },
         { "chickpea", Sections.Cans },
         { "dried tomato", Sections.Cans },
+        { "eggplant", Sections.Produce },
         { "juice", Sections.Beverages },
         { "pepperoni", Sections.Deli },
         { "salted butter", Sections.Dairy },
         { "tomato paste", Sections.Cans },
         { "tortilla chip", Sections.Snacks },
-        
         // Produce -- Fruits
         { "apple", Sections.Produce },
         { "apricot", Sections.Produce },
@@ -35,7 +35,6 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "orange", Sections.Produce },
         { "pear", Sections.Produce },
         { "pomegranate", Sections.Produce },
-        
         // Produce -- Vegetables
         { "arugula", Sections.Produce },
         { "broccoli", Sections.Produce },
@@ -47,6 +46,7 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "garlic", Sections.Produce },
         { "green", Sections.Produce },
         { "leek", Sections.Produce },
+        { "lettuce", Sections.Produce },
         { "mushroom", Sections.Produce },
         { "onion", Sections.Produce },
         { "peas", Sections.Produce },
@@ -56,7 +56,7 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "shallot", Sections.Produce },
         { "spinach", Sections.Produce },
         { "tomato", Sections.Produce },
-        
+        { "zucchini", Sections.Produce },
         // Produce -- Other
         { "basil", Sections.Produce },
         { "chives", Sections.Produce },
@@ -65,12 +65,11 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "rosemary", Sections.Produce },
         { "thyme", Sections.Produce },
         { "tofu", Sections.Produce },
-        
         // Cans
         { "bean", Sections.Cans },
+        { "pesto", Sections.Cans },
         { "sauce", Sections.Cans },
         { "soup", Sections.Cans },
-        
         // Grains
         { "baguette", Sections.Grains },
         { "bread", Sections.Grains },
@@ -82,7 +81,6 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "tortilla", Sections.Grains },
         { "quinoa", Sections.Grains },
         { "wrap", Sections.Grains },
-        
         // Baking
         { "chocolate", Sections.Baking },
         { "flour", Sections.Baking },
@@ -93,7 +91,6 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "vanilla", Sections.Baking },
         { "vinegar", Sections.Baking },
         { "yeast", Sections.Baking },
-        
         // Snacks
         { "chips", Sections.Snacks },
         { "crackers", Sections.Snacks },
@@ -104,7 +101,6 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "popcorn", Sections.Snacks },
         { "salsa", Sections.Snacks },
         { "sours", Sections.Snacks },
-        
         // Beverages
         { "beer", Sections.Beverages },
         { "coke", Sections.Beverages },
@@ -113,7 +109,6 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "soda", Sections.Beverages },
         { "sprite", Sections.Beverages },
         { "wine", Sections.Beverages },
-        
         // Deli
         { "bacon", Sections.Deli },
         { "beef", Sections.Deli },
@@ -124,7 +119,6 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "salmon", Sections.Deli },
         { "sausage", Sections.Deli },
         { "steak", Sections.Deli },
-        
         // Dairy
         { "butter", Sections.Dairy },
         { "burrata", Sections.Dairy },
@@ -134,10 +128,10 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "egg", Sections.Dairy },
         { "feta", Sections.Dairy },
         { "milk", Sections.Dairy },
+        { "mozzarella", Sections.Dairy },
         { "parmesan", Sections.Dairy },
         { "ricotta", Sections.Dairy },
         { "yogurt", Sections.Dairy },
-        
         // Frozen
         { "frozen", Sections.Frozen },
     };
