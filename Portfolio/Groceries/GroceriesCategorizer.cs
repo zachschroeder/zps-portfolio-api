@@ -14,6 +14,7 @@ public class GroceriesCategorizer : IGroceriesCategorizer
     private readonly Dictionary<string, string> _sectionMap = new()
     {
         // Prioritized because of spelling
+        { " buns", Sections.Grains },
         { "can", Sections.Cans },
         { "chickpea", Sections.Cans },
         { "dried tomato", Sections.Cans },
@@ -45,6 +46,7 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "cucumber", Sections.Produce },
         { "garlic", Sections.Produce },
         { "green", Sections.Produce },
+        { "jalape", Sections.Produce },
         { "leek", Sections.Produce },
         { "lettuce", Sections.Produce },
         { "mushroom", Sections.Produce },
@@ -106,14 +108,17 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "coke", Sections.Beverages },
         { "pop", Sections.Beverages },
         { "sauvignon", Sections.Beverages },
+        { "seltzer", Sections.Beverages },
         { "soda", Sections.Beverages },
         { "sprite", Sections.Beverages },
         { "wine", Sections.Beverages },
         // Deli
         { "bacon", Sections.Deli },
         { "beef", Sections.Deli },
+        { "burger", Sections.Deli },
         { "chicken", Sections.Deli },
         { "fish", Sections.Deli },
+        { "hot dog", Sections.Deli },
         { "meat", Sections.Deli },
         { "pork", Sections.Deli },
         { "salmon", Sections.Deli },
