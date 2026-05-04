@@ -109,6 +109,7 @@ public class GroceriesCategorizer : IGroceriesCategorizer
         { "olives", Sections.Snacks },
         { "pistachio", Sections.Snacks },
         { "popcorn", Sections.Snacks },
+        { "pretzel", Sections.Snacks },
         { "salsa", Sections.Snacks },
         { "sours", Sections.Snacks },
 
